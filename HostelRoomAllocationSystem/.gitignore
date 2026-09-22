@@ -1,0 +1,7 @@
+# Compiled Java class files (generated, never committed)
+bin/
+*.class
+
+# Editor / OS files
+.vscode/
+.DS_Store
