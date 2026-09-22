@@ -11,8 +11,21 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 /**
+ * Optional shared secret.
+ *
+ * Only needed if the backend was started with an API_KEY environment
+ * variable set. Locally it is undefined and no header is sent.
+ *
+ * Be aware: anything in a VITE_ variable is baked into the JavaScript
+ * that every visitor downloads, so this is NOT a real secret. It keeps
+ * random bots out; it does not make the API private.
+ */
+const API_KEY = import.meta.env.VITE_API_KEY;
+
+/**
  * Generic fetch wrapper.
  * - Adds Content-Type header for JSON bodies
+ * - Adds the API key header when one is configured
  * - Parses the JSON response
  * - Throws with a human-readable message on errors
  */
@@ -20,10 +33,12 @@ async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
 
   const config = {
+    ...options,
     headers: {
       'Content-Type': 'application/json',
+      ...(API_KEY ? { 'X-Api-Key': API_KEY } : {}),
+      ...(options.headers || {}),
     },
-    ...options,
   };
 
   // Don't send Content-Type for GET/DELETE with no body

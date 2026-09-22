@@ -1,0 +1,16 @@
+# Keep the image small and the build reproducible.
+# bin/ is excluded so the container always compiles from source.
+bin/
+*.class
+
+# The React app is deployed to Vercel, not into this container.
+hostel-frontend/
+
+# Nothing below is needed to run the API.
+docs/
+database/
+*.bat
+*.md
+.git/
+.gitignore
+.vscode/
